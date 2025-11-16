@@ -455,10 +455,27 @@ tap.test("extract test", function (t) {
 tap.test("excessively deep subfolder nesting", function (t) {
   var tf = path.resolve(__dirname, "fixtures/excessively-deep.tar")
 
+  // Debug: log the actual paths
+  console.error("__dirname:", __dirname)
+  console.error("Resolved path:", tf)
+  console.error("File exists?", fs.existsSync(tf))
+  console.error("Current working directory:", process.cwd())
+
+  // Also try absolute path from repo root
+  var altPath = path.resolve(process.cwd(), "test/fixtures/excessively-deep.tar")
+  console.error("Alternative path:", altPath)
+  console.error("Alternative exists?", fs.existsSync(altPath))
+
+
   if (!fs.existsSync(tf)) {
-    t.fail("Test fixture file not found: " + tf)
-    t.end()
-    return
+    // Try alternative path
+    if (fs.existsSync(altPath)) {
+      tf = altPath
+    } else {
+      t.fail("Test fixture file not found: " + tf + " (also tried: " + altPath + ")")
+      t.end()
+      return
+    }
   }
 
   t.test("async default maxDepth", function (t) {
