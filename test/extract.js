@@ -461,6 +461,20 @@ tap.test("excessively deep subfolder nesting", function (t) {
   console.error("File exists?", fs.existsSync(tf))
   console.error("Current working directory:", process.cwd())
 
+  // Use statSync instead of existsSync (more reliable in older Node versions)
+  var fileExists = false
+  try {
+    fs.statSync(tf)
+    fileExists = true
+  } catch (e) {
+    fileExists = false
+  }
+
+  if (!fileExists) {
+    t.fail("Test fixture file not found: " + tf)
+    t.end()
+    return
+  }
 
   t.test("async default maxDepth", function (t) {
     var extractDir = path.resolve(__dirname, "tmp/excessively-deep-test")
@@ -468,14 +482,6 @@ tap.test("excessively deep subfolder nesting", function (t) {
     var extract = tar.Extract({ path: extractDir })
     var inp = fs.createReadStream(tf)
     var errors = []
-    var fileError = null
-
-    // Handle file read errors
-    inp.on("error", function (er) {
-      fileError = er
-      t.fail("Cannot read test fixture: " + tf + " - " + er.message)
-      t.end()
-    })
 
     extract.on("error", function (er) {
       errors.push(er)
