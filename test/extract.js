@@ -453,7 +453,7 @@ tap.test("extract test", function (t) {
 })
 
 tap.test("excessively deep subfolder nesting", function (t) {
-  var tf = path.resolve(__dirname, "fixtures_static/excessively-deep.tar")
+  var tf = path.resolve(__dirname, "fixtures/excessively-deep.tar")
 
   // Debug: log the actual paths
   console.error("__dirname:", __dirname)
