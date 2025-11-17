@@ -455,12 +455,6 @@ tap.test("extract test", function (t) {
 tap.test("excessively deep subfolder nesting", function (t) {
   var tf = path.resolve(__dirname, "fixtures/excessively-deep.tar")
 
-  if (!fs.existsSync(tf)) {
-    t.fail("Test fixture file not found: " + tf)
-    t.end()
-    return
-  }
-
   t.test("async default maxDepth", function (t) {
     var extractDir = path.resolve(__dirname, "tmp/excessively-deep-test")
     require("rimraf").sync(extractDir)
