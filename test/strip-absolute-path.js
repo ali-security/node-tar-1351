@@ -13,6 +13,7 @@ var cases = {
 for (var input in cases) {
     var expected = cases[input]
     var result = stripAbsolutePath(input)
-    t.strictSame(result, expected, input)
+    t.equal(result[0], expected[0], input + ' root')
+    t.equal(result[1], expected[1], input + ' stripped')
 }
 
