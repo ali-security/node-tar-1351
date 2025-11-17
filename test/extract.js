@@ -458,7 +458,7 @@ tap.test('excessively deep subfolder nesting', function (t) {
     , fs = require("fs")
     , path = require("path")
     , fixtures = path.resolve(__dirname, "resouces")
-    , tf = path.resolve(resources, 'excessively-deep.tar')
+    , tf = path.resolve(fixtures, 'excessively-deep.tar')
     , data = fs.readFileSync(tf)
     , warnings = []
     , onwarn = function (code, message, data) {
