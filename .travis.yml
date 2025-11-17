@@ -9,4 +9,4 @@ before_script:
   - ls -la test/fixtures/excessively-deep.tar || echo "File not found!"
   - file test/fixtures/excessively-deep.tar || echo "Cannot check file type"
   - stat test/fixtures/excessively-deep.tar || echo "stat failed"
-  - pwd
+  
