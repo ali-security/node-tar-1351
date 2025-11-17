@@ -3,6 +3,3 @@ node_modules
 examples/extract/
 test/tmp/
 test/fixtures/
-
-# keep this
-!test/fixtures/excessively-deep.tar
