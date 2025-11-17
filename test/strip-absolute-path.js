@@ -1,4 +1,4 @@
-var t = require('tap')
+var tap = require('tap')
 var stripAbsolutePath = require('../lib/strip-absolute-path.js')
 
 var cases = {
@@ -10,10 +10,13 @@ var cases = {
     'c:\\c:\\c:\\c:\\\\d:\\e/f/g': ['c:\\c:\\c:\\c:\\\\d:\\', 'e/f/g'],
 }
 
-for (var input in cases) {
-    var expected = cases[input]
-    var result = stripAbsolutePath(input)
-    t.equal(result[0], expected[0], input + ' root')
-    t.equal(result[1], expected[1], input + ' stripped')
-}
+tap.test('strip absolute path', function (t) {
+    for (var input in cases) {
+        var expected = cases[input]
+        var result = stripAbsolutePath(input)
+        t.equal(result[0], expected[0], input + ' root')
+        t.equal(result[1], expected[1], input + ' stripped')
+    }
+    t.end()
+})
 
