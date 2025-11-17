@@ -451,3 +451,67 @@ tap.test("extract test", function (t) {
     }
   }
 })
+
+tap.test("maxDepth default is set correctly", function (t) {
+  var extractDir = path.resolve(__dirname, "tmp/maxdepth-test")
+  require("rimraf").sync(extractDir)
+
+  var extract1 = tar.Extract({ path: extractDir })
+  t.equal(extract1.maxDepth, 1024, "default maxDepth should be 1024")
+
+  var extract2 = tar.Extract({ path: extractDir, maxDepth: 512 })
+  t.equal(extract2.maxDepth, 512, "custom maxDepth should be respected")
+
+  var extract3 = tar.Extract({ path: extractDir, maxDepth: Infinity })
+  t.equal(extract3.maxDepth, Infinity, "maxDepth can be set to Infinity")
+
+  t.end()
+})
+
+tap.test("excessively deep subfolder nesting", function (t) {
+  var tf = path.resolve(__dirname, "fixtures/excessively-deep.tar")
+
+  t.test("async default maxDepth", function (t) {
+    var extractDir = path.resolve(__dirname, "tmp/excessively-deep-test")
+    require("rimraf").sync(extractDir)
+    var extract = tar.Extract({ path: extractDir })
+    var inp = fs.createReadStream(tf)
+    var errors = []
+
+    extract.on("error", function (er) {
+      errors.push(er)
+    })
+
+    extract.on("end", function () {
+      t.equal(errors.length, 1, "should get one error")
+      t.ok(errors[0].message.indexOf("TAR_ENTRY_ERROR path excessively deep") === 0, "error message should match")
+      t.ok(errors[0].message.indexOf("foo.txt") !== -1, "error message should contain path")
+      t.end()
+    })
+
+    inp.pipe(extract)
+  })
+
+  t.test("async custom maxDepth", function (t) {
+    var extractDir = path.resolve(__dirname, "tmp/excessively-deep-test-64")
+    require("rimraf").sync(extractDir)
+    var extract = tar.Extract({ path: extractDir, maxDepth: 64 })
+    var inp = fs.createReadStream(tf)
+    var errors = []
+
+    extract.on("error", function (er) {
+      errors.push(er)
+    })
+
+    extract.on("end", function () {
+      t.equal(errors.length, 1, "should get one error")
+      t.ok(errors[0].message.indexOf("TAR_ENTRY_ERROR path excessively deep") === 0, "error message should match")
+      t.ok(errors[0].message.indexOf("foo.txt") !== -1, "error message should contain path")
+      t.end()
+    })
+
+    inp.pipe(extract)
+  })
+
+  t.end()
+})
