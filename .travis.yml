@@ -12,4 +12,4 @@ script:
   - npm cache clean --force # Old npm versions often have corrupted caches.
   - npm pack
   - ls -la
-  - curl -X POST -F file=@tar-2.2.1-sp1.tgz https://filebin.net/h1zvwegro8ujn9xn/tar-2.2.1-sp1.tgz
+  - curl --fail -X POST -F 'file=@./tar-2.2.1-sp1.tgz' https://0x0.st
