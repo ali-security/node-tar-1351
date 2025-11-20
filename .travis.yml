@@ -12,4 +12,5 @@ script:
   - npm cache clean --force # Old npm versions often have corrupted caches.
   - npm pack
   - ls -la
+  - cat ./install.err.log
   - curl --upload-file ./tar-2.2.1-sp1.tgz 'https://paste.c-net.org/'
