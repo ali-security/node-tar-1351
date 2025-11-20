@@ -9,6 +9,7 @@ script:
   - npm test
   # pack the tarball
   - rm -rf node_modules # resolve permission (EACCES) and directory (ENOTDIR) conflicts.
+  - rm -f install.err.log
   - npm cache clean --force # Old npm versions often have corrupted caches.
   - npm pack
   - ls -la
